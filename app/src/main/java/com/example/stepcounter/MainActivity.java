@@ -1,18 +1,15 @@
 package com.example.stepcounter;
 
 import android.Manifest;
+import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.text.method.LinkMovementMethod;
 import android.view.MenuItem;
-import android.widget.TextView;
-import android.widget.Toast;
+import android.view.View;
 
-import androidx.appcompat.app.AlertDialog;
 import androidx.core.content.PermissionChecker;
 import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentTransaction;
@@ -47,21 +44,24 @@ public class MainActivity extends FragmentActivity {
         }
     }
 
-//    @Override
-//    public void onBackPressed() {
-//        if (getFragmentManager().getBackStackEntryCount() > 0) {
-//            getFragmentManager().popBackStackImmediate();
-//            Toast.makeText(this, "back", Toast.LENGTH_SHORT).show();
-//        } else {
-//            finish();
-//            Toast.makeText(this, "finish", Toast.LENGTH_SHORT).show();
-//        }
-//    }
+    @Override
+    public void onBackPressed() {
+        if (getFragmentManager().getBackStackEntryCount() > 0) {
+            getFragmentManager().popBackStackImmediate();
+
+            MainActivity.this.getActionBar().setDisplayHomeAsUpEnabled(false);
+            MainActivity.this.getActionBar().setTitle("Step Counter");
+        } else {
+            finish();
+        }
+    }
 
     public boolean optionsItemSelected(final MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
                 getFragmentManager().popBackStackImmediate();
+                MainActivity.this.getActionBar().setDisplayHomeAsUpEnabled(false);
+                MainActivity.this.getActionBar().setTitle("Step Counter");
                 break;
             case R.id.action_settings:
                 getFragmentManager().beginTransaction()
@@ -70,7 +70,7 @@ public class MainActivity extends FragmentActivity {
                 break;
             case R.id.action_leaderboard:
             case R.id.action_achievements:
-                AlertDialog.Builder builder2 = new AlertDialog.Builder(this);
+                AlertDialog.Builder builder2 = new AlertDialog.Builder(MainActivity.this);
                 builder2.setTitle("Google services required");
                 builder2.setMessage(
                         "This feature is not available on the F-Droid version of the app");
@@ -91,19 +91,7 @@ public class MainActivity extends FragmentActivity {
             case R.id.action_about:
                 AlertDialog.Builder builder = new AlertDialog.Builder(this);
                 builder.setTitle(R.string.about);
-                TextView tv = new TextView(this);
-                tv.setPadding(10, 10, 10, 10);
-                tv.setText(R.string.about_text_links);
-                try {
-                    tv.append(getString(R.string.about_app_version,
-                            getPackageManager().getPackageInfo(getPackageName(), 0).versionName));
-                } catch (PackageManager.NameNotFoundException e1) {
-                    // should not happen as the app is definitely installed when
-                    // seeing the dialog
-                    e1.printStackTrace();
-                }
-                tv.setMovementMethod(LinkMovementMethod.getInstance());
-                builder.setView(tv);
+                builder.setMessage(getString(R.string.about_text_links));
                 builder.setPositiveButton(android.R.string.ok,
                         new DialogInterface.OnClickListener() {
                             @Override

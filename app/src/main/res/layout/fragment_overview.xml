@@ -9,6 +9,7 @@
     <org.eazegraph.lib.charts.PieChart
         xmlns:eaze="http://schemas.android.com/apk/res-auto"
         android:id="@+id/graph"
+        eaze:egInnerPaddingColor="@color/colorCream"
         android:layout_width="match_parent"
         android:layout_height="200dp"
         android:layout_marginTop="10dp"
@@ -18,7 +19,8 @@
 
     <TextView
         android:id="@+id/steps"
-        android:layout_width="match_parent"
+        android:layout_centerHorizontal="true"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="75dp"
         android:gravity="center"

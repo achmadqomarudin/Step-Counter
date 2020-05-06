@@ -26,6 +26,8 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
@@ -66,14 +68,14 @@ public class Fragment_Settings extends PreferenceFragment implements OnPreferenc
     @Override
     public void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        setHasOptionsMenu(true);
         addPreferencesFromResource(R.xml.settings);
 
-        final SharedPreferences prefs =
-                getActivity().getSharedPreferences("pedometer", Context.MODE_PRIVATE);
+        final SharedPreferences prefs = getActivity().getSharedPreferences("pedometer", Context.MODE_PRIVATE);
 
         findPreference("import").setOnPreferenceClickListener(this);
         findPreference("export").setOnPreferenceClickListener(this);
+
         if (Build.VERSION.SDK_INT >= 26) {
             findPreference("notification").setOnPreferenceClickListener(this);
         } else {
@@ -98,9 +100,8 @@ public class Fragment_Settings extends PreferenceFragment implements OnPreferenc
                     });
         }
 
-        Preference account = findPreference("account");
-
-        Preference goal = findPreference("goal");
+        Preference account  = findPreference("account");
+        Preference goal     = findPreference("goal");
         goal.setOnPreferenceClickListener(this);
         goal.setSummary(getString(R.string.goal_summary, prefs.getInt("goal", DEFAULT_GOAL)));
 
@@ -109,8 +110,6 @@ public class Fragment_Settings extends PreferenceFragment implements OnPreferenc
         stepsize.setSummary(getString(R.string.step_size_summary,
                 prefs.getFloat("stepsize_value", DEFAULT_STEP_SIZE),
                 prefs.getString("stepsize_unit", DEFAULT_STEP_UNIT)));
-
-        setHasOptionsMenu(true);
     }
 
     @Override
@@ -122,6 +121,8 @@ public class Fragment_Settings extends PreferenceFragment implements OnPreferenc
     public void onResume() {
         super.onResume();
         getActivity().getActionBar().setDisplayHomeAsUpEnabled(true);
+        getActivity().getActionBar().setTitle("Setting");
+
         if (Build.VERSION.SDK_INT >= 26) { // notification settings might have changed
             API26Wrapper.startForegroundService(getActivity(),
                     new Intent(getActivity(), SensorListener.class));
@@ -185,8 +186,8 @@ public class Fragment_Settings extends PreferenceFragment implements OnPreferenc
             case R.string.step_size:
                 builder = new AlertDialog.Builder(getActivity());
                 v = getActivity().getLayoutInflater().inflate(R.layout.stepsize, null);
-                final RadioGroup unit = (RadioGroup) v.findViewById(R.id.unit);
-                final EditText value = (EditText) v.findViewById(R.id.value);
+                final RadioGroup unit   = v.findViewById(R.id.unit);
+                final EditText value    = v.findViewById(R.id.value);
                 unit.check(
                         prefs.getString("stepsize_unit", DEFAULT_STEP_UNIT).equals("cm") ? R.id.cm :
                                 R.id.ft);

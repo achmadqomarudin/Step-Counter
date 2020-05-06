@@ -44,7 +44,7 @@
     <string name="total_this_month">Total this month</string>
     <string name="average_this_month">Average this month</string>
     <string name="file_already_exists">File already exists. Are you sure you want to overwrite it?</string>
-    <string name="about_text_links">This app was created by Thomas Hoffmann and updated by Projectworlds  and uses <a href="https://projectworlds.in">Projectworlds</a> by Yugesh Verma  This App is open source! .\n\n</string>
+    <string name="about_text_links">This app is made by Achmad Qomarudin.</string>
     <string name="about_app_version">App version: %s</string>
     <string name="since">Since %s</string>
     <string name="start">Start</string>
